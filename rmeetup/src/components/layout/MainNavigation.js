@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
-import FavouritesPage from "../../pages/Favorites";
-import NewMeetupsPage from "../../pages/NewMeetups";
 import FavouritesContext from "../../store/favorites-context";
 
 import classes from "./MainNavigation.module.css";
@@ -11,7 +9,7 @@ function MainNavigation() {
 
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>React Meetups</div>
+      <div className={classes.logo}>Meetups</div>
       <nav>
         <ul>
           <li>
