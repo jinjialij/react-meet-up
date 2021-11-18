@@ -13,7 +13,7 @@ function FavoritesPage() {
   return (
     <section>
       <h1>My Favorites</h1>
-      {context}
+      {<p>{context}</p>}
     </section>
   );
 }
