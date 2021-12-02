@@ -3,9 +3,11 @@ import { useContext } from "react";
 import FavouritesContext from "../../store/favorites-context";
 
 import classes from "./MainNavigation.module.css";
+import PinContext from "../../store/pin-context";
 
 function MainNavigation() {
   const favoriteCtx = useContext(FavouritesContext);
+  const pinCtx = useContext(PinContext);
 
   return (
     <header className={classes.header}>
@@ -24,6 +26,13 @@ function MainNavigation() {
               <span className={classes.badge}>
                 {favoriteCtx.totalFavourites}
               </span>
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/pinedMeetups">
+              My Pins
+              <span className={classes.badge}>{pinCtx.totalPined}</span>
             </Link>
           </li>
         </ul>
