@@ -20,6 +20,10 @@ ul {
 }
 
 .content {
+  padding: 1rem;
+}
+
+.content h3 {
   text-align: center;
   padding: 1rem;
 }

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 function NewMeetupsPage() {
   const history = useHistory();
   function addMeetupHandler(meetupData) {
-    fetch("http://localhost:5000/new-meetup", {
+    fetch("https://meetuphere.herokuapp.com/meetups/new-meetup", {
       method: "POST",
       body: JSON.stringify(meetupData),
       headers: { "Content-type": "application/json" },

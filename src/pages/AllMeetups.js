@@ -11,11 +11,11 @@ function AllMeetupsPage() {
   const [totalpageArr, setTotalpageArr] = useState([1]);
   const [paginator, setPaginator] = useState({
     page: 1,
-    limit: 1,
+    limit: 5,
   });
 
   const [url, setUrl] = useState(
-    "https://meetuphere.herokuapp.com/meetups?title=&page=1&limit=1"
+    "https://meetuphere.herokuapp.com/meetups?title=&page=1&limit=5"
   );
   // let url = `https://meetuphere.herokuapp.com/meetups?title=${searchText}&page=${paginator.page}&limit=${paginator.limit}`;
 
