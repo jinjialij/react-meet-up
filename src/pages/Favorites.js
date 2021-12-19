@@ -6,14 +6,14 @@ function FavoritesPage() {
   const favoriteCtx = useContext(FavouritesContext);
   let context;
   if (favoriteCtx.totalFavourites === 0) {
-    context = `No Favorites yet. Start adding some?`;
+    context = <p>No Favorites yet. Start adding some?</p>;
   } else {
     context = <MeetupList meetups={favoriteCtx.favourites} />;
   }
   return (
     <section>
       <h1>My Favorites</h1>
-      {<p>{context}</p>}
+      {<div>{context}</div>}
     </section>
   );
 }

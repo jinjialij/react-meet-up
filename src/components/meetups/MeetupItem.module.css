@@ -33,12 +33,14 @@ ul {
   color: #2c292b;
 }
 
-.actions {
+/* .actions {
   padding: 1.5rem;
+
   text-align: center;
 }
 
 .actions button {
+  margin: 10px;
   font: inherit;
   cursor: pointer;
   color: #77002e;
@@ -51,4 +53,10 @@ ul {
 .actions button:hover,
 .actions button:active {
   background-color: #ffe2ed;
+} */
+
+.fav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
 }

@@ -65,6 +65,7 @@ function NewMeetupForm(props) {
       image: imageUrl,
       address: enteredAddressInput,
       desc: enteredDescInput,
+      fav: false,
     };
     console.log(meetupData);
     props.onAddMeetup(meetupData);

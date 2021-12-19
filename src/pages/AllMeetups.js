@@ -4,6 +4,9 @@ import Option from "../components/ui/Option";
 import classes from "./AllMeetups.module.css";
 import { useState, useEffect } from "react";
 
+const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
+const TEST_URL = `http://localhost:5000/meetups`;
+
 function AllMeetupsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadedMeetups, setLoadedMeetups] = useState([]);
@@ -14,9 +17,7 @@ function AllMeetupsPage() {
     limit: 5,
   });
 
-  const [url, setUrl] = useState(
-    "https://meetuphere.herokuapp.com/meetups?title=&page=1&limit=5"
-  );
+  const [url, setUrl] = useState(`${TEST_URL}?title=&page=1&limit=5`);
   // let url = `https://meetuphere.herokuapp.com/meetups?title=${searchText}&page=${paginator.page}&limit=${paginator.limit}`;
 
   useEffect(() => {
@@ -46,9 +47,7 @@ function AllMeetupsPage() {
   };
 
   const searchBtnHandler = (event) => {
-    setUrl(
-      `https://meetuphere.herokuapp.com/meetups?title=${searchText}&page=1&limit=${paginator.limit}`
-    );
+    setUrl(`${TEST_URL}?title=${searchText}&page=1&limit=${paginator.limit}`);
     setPaginator((prevState) => {
       return { ...prevState, page: 1 };
     });
@@ -65,7 +64,7 @@ function AllMeetupsPage() {
 
   const pageSelectHandler = (event) => {
     setUrl(
-      `https://meetuphere.herokuapp.com/meetups?title=${searchText}&page=${event.target.value}&limit=${paginator.limit}`
+      `${TEST_URL}?title=${searchText}&page=${event.target.value}&limit=${paginator.limit}`
     );
     setPaginator((prevState) => {
       return { ...prevState, page: event.target.value };
@@ -74,7 +73,7 @@ function AllMeetupsPage() {
 
   const itemPerPageSelectHandler = (event) => {
     setUrl(
-      `https://meetuphere.herokuapp.com/meetups?title=${searchText}&page=1&limit=${event.target.value}`
+      `${TEST_URL}?title=${searchText}&page=1&limit=${event.target.value}`
     );
     setPaginator({ page: 1, limit: event.target.value });
   };
