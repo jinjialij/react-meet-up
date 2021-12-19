@@ -38,6 +38,10 @@ function MeetupItem(props) {
     }
   }
 
+  const deleteHandler = () => {
+    props.onDeleteMeetup(props.id);
+  };
+
   return (
     <li className={classes.item}>
       <Card>
@@ -49,18 +53,17 @@ function MeetupItem(props) {
           <address>{props.address}</address>
           <p>{props.description}</p>
         </div>
-        {/* <div className={classes.actions} onClick={toggleFavouriteStatusHandler}>
-          <button>
-            {isFav ? "Remove From Favorites" : "Add To Favourites"}
-          </button>
-        </div> */}
-        <div className={classes.fav} onClick={toggleFavouriteStatusHandler}>
-          {isFav ? (
-            <BsHeartFill size={35} color="red" className={classes.icon} />
-          ) : (
-            <BsHeart size={35} color="red" className={classes.icon} />
-          )}
-          <AiFillDelete size={35} color="#77002e" className={classes.icon} />
+        <div className={classes.fav}>
+          <div onClick={toggleFavouriteStatusHandler}>
+            {isFav ? (
+              <BsHeartFill size={35} color="red" className={classes.icon} />
+            ) : (
+              <BsHeart size={35} color="red" className={classes.icon} />
+            )}
+          </div>
+          <div onClick={deleteHandler}>
+            <AiFillDelete size={35} color="#77002e" className={classes.icon} />
+          </div>
         </div>
       </Card>
     </li>

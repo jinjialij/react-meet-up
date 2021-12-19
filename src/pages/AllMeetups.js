@@ -41,7 +41,20 @@ function AllMeetupsPage() {
   if (isLoading) {
     return <section>Loading...</section>;
   }
+  const deleteMeetupHandler = (id) => {
+    const url = `${TEST_URL}/${id}`;
+    console.log(url);
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: "",
+    });
 
+    //To-do
+    //update loadedMeetups
+  };
   const searchTextChangeHandler = (event) => {
     setSearchText(event.target.value);
   };
@@ -136,7 +149,10 @@ function AllMeetupsPage() {
           </select>
         </div>
       </div>
-      <MeetupList meetups={loadedMeetups} />
+      <MeetupList
+        meetups={loadedMeetups}
+        onDeleteMeetup={deleteMeetupHandler}
+      />
     </section>
   );
 }

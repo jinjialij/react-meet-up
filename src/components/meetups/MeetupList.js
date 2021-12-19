@@ -15,6 +15,7 @@ function MeetupList(props) {
             address={meetup.address}
             description={meetup.description}
             fav={meetup.fav}
+            onDeleteMeetup={props.onDeleteMeetup}
           />
         );
       })}
