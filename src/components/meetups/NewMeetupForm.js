@@ -13,6 +13,7 @@ function NewMeetupForm(props) {
   const [progress, setProgess] = useState(0);
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
+  // const [valid, setValid] = useState(false);
 
   const uploadHandler = (event) => {
     // console.log(event.target.files[0]);
@@ -52,14 +53,18 @@ function NewMeetupForm(props) {
     const enteredAddressInput = addressInputRef.current.value;
     const enteredDescInput = descInputRef.current.value;
 
+    //To-do: update the validation
     //validate
     if (
       !imageUrl ||
       !enteredTitleInput ||
       !enteredAddressInput ||
       !enteredDescInput
-    )
+    ) {
+
       return;
+    }
+
     const meetupData = {
       title: enteredTitleInput,
       image: imageUrl,
@@ -88,13 +93,11 @@ function NewMeetupForm(props) {
           <div className={classes.upload}>
             <h3>Upload {progress}%</h3>
             {image && imageUrl && (
-              // <div >
               <img
                 src={imageUrl}
                 alt="uploadImage"
                 className={classes.imageview}
               />
-              // </div>
             )}
           </div>
         </div>
@@ -110,7 +113,9 @@ function NewMeetupForm(props) {
         </div>
 
         <div className={classes.actions}>
-          <button>Add Meetup</button>
+          !enteredDescInput
+          !enteredDescInput
+          <button disabled={imageUrl && titleInputRef.current.value && addressInputRef.current.value && descInputRef.current.value}>Add Meetup</button>
         </div>
       </form>
     </Card>

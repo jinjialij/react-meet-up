@@ -17,7 +17,7 @@ function AllMeetupsPage() {
     limit: 5,
   });
 
-  const [url, setUrl] = useState(`${TEST_URL}?title=&page=1&limit=5`);
+  const [url, setUrl] = useState(`${BASE_URL}?title=&page=1&limit=5`);
   // let url = `https://meetuphere.herokuapp.com/meetups?title=${searchText}&page=${paginator.page}&limit=${paginator.limit}`;
 
   useEffect(() => {
@@ -41,26 +41,47 @@ function AllMeetupsPage() {
   if (isLoading) {
     return <section>Loading...</section>;
   }
-  const deleteMeetupHandler = (id) => {
-    const url = `${TEST_URL}/${id}`;
+  const deleteMeetupHandler = async (id) => {
+    const url = `${BASE_URL}/${id}`;
     console.log(url);
-    fetch(url, {
+    const deletedMeetup = await fetch(url, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
       body: "",
-    });
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Failed to delete Status: ${res.status}`);
+        }
+        console.log(res);
+        return res.json();
+      })
+      .then((data) => {
+        console.log(`data`);
+        console.log(data);
+        return data.meetup;
+      });
 
     //To-do
     //update loadedMeetups
+    setLoadedMeetups((prev) => {
+      // const updateMeetups = prev.filter(
+      //   (meetup) => meetup.id !== deletedMeetup._id
+      // );
+      // console.log(updateMeetups);
+      // return updateMeetups;
+      console.log(deletedMeetup);
+      return prev.filter((meetup) => meetup.id !== deletedMeetup._id);
+    });
   };
   const searchTextChangeHandler = (event) => {
     setSearchText(event.target.value);
   };
 
   const searchBtnHandler = (event) => {
-    setUrl(`${TEST_URL}?title=${searchText}&page=1&limit=${paginator.limit}`);
+    setUrl(`${BASE_URL}?title=${searchText}&page=1&limit=${paginator.limit}`);
     setPaginator((prevState) => {
       return { ...prevState, page: 1 };
     });
@@ -77,7 +98,7 @@ function AllMeetupsPage() {
 
   const pageSelectHandler = (event) => {
     setUrl(
-      `${TEST_URL}?title=${searchText}&page=${event.target.value}&limit=${paginator.limit}`
+      `${BASE_URL}?title=${searchText}&page=${event.target.value}&limit=${paginator.limit}`
     );
     setPaginator((prevState) => {
       return { ...prevState, page: event.target.value };
@@ -86,7 +107,7 @@ function AllMeetupsPage() {
 
   const itemPerPageSelectHandler = (event) => {
     setUrl(
-      `${TEST_URL}?title=${searchText}&page=1&limit=${event.target.value}`
+      `${BASE_URL}?title=${searchText}&page=1&limit=${event.target.value}`
     );
     setPaginator({ page: 1, limit: event.target.value });
   };

@@ -1,16 +1,19 @@
 import { createContext, useState, useEffect } from "react";
+import { fetchMeetups } from '../service/FetchApiService'
 
 const FavouritesContext = createContext({
+  isLoading: false,
   favourites: [],
   totalFavourites: 0,
-  addFavorite: (fav) => {},
-  removeFavorite: (meetupid) => {},
+  addFavorite: (fav) => { },
+  removeFavorite: (meetupid) => { },
 });
-
+const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 const TEST_URL = `http://localhost:5000/meetups`;
 
 const updateFavApi = (favoriteMeetUp) => {
-  const url = `${TEST_URL}/${favoriteMeetUp._id}`;
+  const url = `${BASE_URL}/${favoriteMeetUp._id}`;
+
   fetch(url, {
     method: "PUT",
     headers: {
@@ -24,15 +27,18 @@ const updateFavApi = (favoriteMeetUp) => {
       }
       return res.json();
     })
-    .then((data) => console.log(data))
+    // .then((data) => console.log(data))
     .catch((err) => console.error(err));
 };
 
 export function FavoritesContextProvider(props) {
   const [userFavourites, setUserFavourites] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    fetch(`${TEST_URL}?fav=true`)
+    const url = `${BASE_URL}?fav=true`;
+    setIsLoading(true);
+    fetch(url)
       .then((res) => {
         if (!res.ok) {
           throw new Error(`Failed to update, Status: ${res.status}`);
@@ -40,27 +46,31 @@ export function FavoritesContextProvider(props) {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setUserFavourites(data.meetups);
+        setIsLoading(false);
       })
       .catch((err) => console.error(err));
   }, []);
 
   function addFavoriteHandler(favoriteMeetUp) {
-    updateFavApi(favoriteMeetUp);
+
     setUserFavourites((prevFavorites) => {
       return prevFavorites.concat(favoriteMeetUp);
     });
+    updateFavApi(favoriteMeetUp);
   }
 
   function removeFavoriteHandler(favoriteMeetUp) {
-    updateFavApi(favoriteMeetUp);
+    console.log(favoriteMeetUp._id);
     setUserFavourites((prev) => {
-      return prev.filter((meetup) => meetup.id !== favoriteMeetUp._id);
+      return prev.filter((meetup) => meetup._id !== favoriteMeetUp._id);
     });
+    updateFavApi(favoriteMeetUp);
   }
 
   const context = {
+    isLoading: isLoading,
     favourites: userFavourites,
     totalFavourites: userFavourites.length,
     addFavorite: addFavoriteHandler,

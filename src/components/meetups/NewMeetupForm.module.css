@@ -38,7 +38,12 @@
   font-weight: bold;
 }
 
-.actions button:hover,
+.actions button:disabled{
+  background-color: gray;
+  border-color: gray;
+}
+
+/* .actions button:hover, */
 .actions button:active {
   background-color: #a50e48;
   border-color: #a50e48;

@@ -13,7 +13,8 @@ function FavoritesPage() {
   return (
     <section>
       <h1>My Favorites</h1>
-      {<div>{context}</div>}
+      {favoriteCtx.isLoading && <p>...Loading...</p>}
+      {!favoriteCtx.isLoading && <div>{context}</div>}
     </section>
   );
 }
