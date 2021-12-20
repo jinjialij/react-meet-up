@@ -64,16 +64,9 @@ function AllMeetupsPage() {
         return data.meetup;
       });
 
-    //To-do
-    //update loadedMeetups
     setLoadedMeetups((prev) => {
-      // const updateMeetups = prev.filter(
-      //   (meetup) => meetup.id !== deletedMeetup._id
-      // );
-      // console.log(updateMeetups);
-      // return updateMeetups;
-      console.log(deletedMeetup);
-      return prev.filter((meetup) => meetup.id !== deletedMeetup._id);
+      // console.log(deletedMeetup);
+      return prev.filter((meetup) => meetup._id !== deletedMeetup._id);
     });
   };
   const searchTextChangeHandler = (event) => {

@@ -76,3 +76,8 @@
   border-radius: 4px;
   font-weight: bold;
 }
+
+
+.uploadbtn button:disabled {
+  background-color: gray;
+}

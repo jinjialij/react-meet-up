@@ -14,16 +14,16 @@ function NewMeetupForm(props) {
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
   const [disabled, setDisabled] = useState(true);
+  const [isLoadingImg, setIsLoadingImg] = useState(false);
 
   const setDisabledHandler = () => {
-    console.log(`setDisabledHandler triggered`);
     const value = imageUrl && titleInputRef.current.value && addressInputRef.current.value && descInputRef.current.value;
-    console.log(!value)
+    // console.log(!value)
     setDisabled(!value);
   }
 
   const uploadHandler = (event) => {
-    console.log(event.target.files[0]);
+    // console.log(event.target.files[0]);
     if (event.target.files[0]) {
       setImage(event.target.files[0]);
     }
@@ -31,6 +31,7 @@ function NewMeetupForm(props) {
 
   const uploadToStorageHandler = () => {
     if (!image) return;
+    setIsLoadingImg(true);
     const storageRef = ref(storage, `/images/${image.name}`);
     const uploadTask = uploadBytesResumable(storageRef, image);
     uploadTask.on(
@@ -47,13 +48,12 @@ function NewMeetupForm(props) {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           setImageUrl(url);
           // console.log(url);
+          setIsLoadingImg(false);
           setDisabledHandler();
         });
       }
     );
   };
-
-
   function submitHandler(event) {
     event.preventDefault(); //from js
 
@@ -94,18 +94,21 @@ function NewMeetupForm(props) {
 
         <div className={classes.control}>
           <label htmlFor="image">Meetup Image</label>
-          <input type="file" required id="image" onChange={uploadHandler} />
-          <div className={classes.uploadbtn}>
-            <button onClick={uploadToStorageHandler}>Upload</button>
-          </div>
+          <input type="file" required id="image" onChange={uploadHandler} accept="image/*" />
+          {image &&
+            <div className={classes.uploadbtn}>
+              <button disabled={isLoadingImg} onClick={uploadToStorageHandler}>Upload</button>
+            </div>}
 
           <div className={classes.upload}>
-            <h3>Upload {progress}%</h3>
+            {image && <h3>Upload {progress}%</h3>}
+            {isLoadingImg && (<p>...isLoading</p>)}
             {image && imageUrl && (
               <img
                 src={imageUrl}
                 alt="uploadImage"
                 className={classes.imageview}
+                onLoad={loadingHandler}
               />
             )}
           </div>
