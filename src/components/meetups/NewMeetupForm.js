@@ -27,17 +27,17 @@ function NewMeetupForm(props) {
   const uploadHandler = (event) => {
     // console.log(event.target.files[0]);
     let isReupload = false;
-    const file = event.target.files[0];
-    if (file) {
-      if (imageUrl) {
-        isReupload = window.confirm("You have uploaded image. By selecting another image, your previous image will be replaced. Are you sure?");
-        if (isReupload) {
-          setImageUrl("");
-        } else {
-          return;
-        }
+    if (imageUrl) {
+      isReupload = window.confirm("You have uploaded image. By selecting another image, your previous image will be replaced. Are you sure?");
+      if (isReupload) {
+        setImageUrl("");
+      } else {
+        return;
       }
+    }
+    const file = event.target.files[0];
 
+    if (file) {
       setImage(file);
       setProgess(0);
       const reader = new FileReader();
@@ -47,8 +47,6 @@ function NewMeetupForm(props) {
       }
       reader.readAsDataURL(file);
     }
-
-
   };
 
   const uploadToStorageHandler = () => {
@@ -136,7 +134,7 @@ function NewMeetupForm(props) {
               <button disabled={isLoadingImg} onClick={uploadToStorageHandler}>Upload</button>
             </div>
           }
-          {imagepreview && progress > 0 && <h3 className={classes.upload}>Uploading... {progress}%</h3>}
+          {(isLoadingImg || progress > 0) && <h3 className={classes.upload}>Uploading... {progress}%</h3>}
           {imageUrl && <h3 className={`${classes.upload} ${classes.completed}`}><span><AiFillCheckCircle size={45} color="green" /></span>Upload successfully</h3>}
         </div>
 

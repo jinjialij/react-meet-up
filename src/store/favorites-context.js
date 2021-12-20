@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import { fetchMeetups } from '../service/FetchApiService'
 
 const FavouritesContext = createContext({
   isLoading: false,
@@ -7,6 +6,7 @@ const FavouritesContext = createContext({
   totalFavourites: 0,
   addFavorite: (fav) => { },
   removeFavorite: (meetupid) => { },
+  deleteMeetup: (meetup) => { }
 });
 const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 const TEST_URL = `http://localhost:5000/meetups`;
@@ -69,12 +69,19 @@ export function FavoritesContextProvider(props) {
     updateFavApi(favoriteMeetUp);
   }
 
+  const deleteMeetupHandler = (id) => {
+    setUserFavourites((prev) => {
+      return prev.filter((meetup) => meetup._id !== id);
+    });
+  }
+
   const context = {
     isLoading: isLoading,
     favourites: userFavourites,
     totalFavourites: userFavourites.length,
     addFavorite: addFavoriteHandler,
     removeFavorite: removeFavoriteHandler,
+    deleteMeetup: deleteMeetupHandler
   };
 
   return (

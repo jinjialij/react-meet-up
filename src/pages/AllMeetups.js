@@ -1,5 +1,6 @@
 import MeetupList from "../components/meetups/MeetupList";
 import Option from "../components/ui/Option";
+import { deleteMeetup, } from '../service/FetchApiService'
 
 import classes from "./AllMeetups.module.css";
 import { useState, useEffect } from "react";
@@ -42,33 +43,12 @@ function AllMeetupsPage() {
     return <section>Loading...</section>;
   }
   const deleteMeetupHandler = async (id) => {
-    const url = `${BASE_URL}/${id}`;
-    console.log(url);
-    const deletedMeetup = await fetch(url, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: "",
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Failed to delete Status: ${res.status}`);
-        }
-        console.log(res);
-        return res.json();
-      })
-      .then((data) => {
-        console.log(`data`);
-        console.log(data);
-        return data.meetup;
-      });
-
+    const deletedMeetup = await deleteMeetup(id)
     setLoadedMeetups((prev) => {
-      // console.log(deletedMeetup);
       return prev.filter((meetup) => meetup._id !== deletedMeetup._id);
     });
   };
+
   const searchTextChangeHandler = (event) => {
     setSearchText(event.target.value);
   };
