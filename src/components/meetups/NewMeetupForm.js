@@ -3,6 +3,7 @@ import classes from "./NewMeetupForm.module.css";
 import { useRef, useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
 import { storage } from "../../firebase/firebase";
+import { AiFillCheckCircle } from "react-icons/ai";
 
 function NewMeetupForm(props) {
   const titleInputRef = useRef();
@@ -11,10 +12,11 @@ function NewMeetupForm(props) {
   const descInputRef = useRef();
 
   const [progress, setProgess] = useState(0);
-  const [image, setImage] = useState();
+  const [image, setImage] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [isLoadingImg, setIsLoadingImg] = useState(false);
+  const [imagepreview, setImagepreview] = useState("");
 
   const setDisabledHandler = () => {
     const value = imageUrl && titleInputRef.current.value && addressInputRef.current.value && descInputRef.current.value;
@@ -24,9 +26,29 @@ function NewMeetupForm(props) {
 
   const uploadHandler = (event) => {
     // console.log(event.target.files[0]);
-    if (event.target.files[0]) {
-      setImage(event.target.files[0]);
+    let isReupload = false;
+    const file = event.target.files[0];
+    if (file) {
+      if (imageUrl) {
+        isReupload = window.confirm("You have uploaded image. By selecting another image, your previous image will be replaced. Are you sure?");
+        if (isReupload) {
+          setImageUrl("");
+        } else {
+          return;
+        }
+      }
+
+      setImage(file);
+      setProgess(0);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagepreview(reader.result);
+        setImageUrl("");
+      }
+      reader.readAsDataURL(file);
     }
+
+
   };
 
   const uploadToStorageHandler = () => {
@@ -49,6 +71,7 @@ function NewMeetupForm(props) {
           setImageUrl(url);
           // console.log(url);
           setIsLoadingImg(false);
+          setProgess(0);
           setDisabledHandler();
         });
       }
@@ -95,23 +118,26 @@ function NewMeetupForm(props) {
         <div className={classes.control}>
           <label htmlFor="image">Meetup Image</label>
           <input type="file" required id="image" onChange={uploadHandler} accept="image/*" />
-          {image &&
-            <div className={classes.uploadbtn}>
-              <button disabled={isLoadingImg} onClick={uploadToStorageHandler}>Upload</button>
-            </div>}
+
 
           <div className={classes.upload}>
-            {image && <h3>Upload {progress}%</h3>}
-            {isLoadingImg && (<p>...isLoading</p>)}
-            {image && imageUrl && (
+            {imagepreview && (
               <img
-                src={imageUrl}
+                src={imagepreview}
                 alt="uploadImage"
                 className={classes.imageview}
-                onLoad={loadingHandler}
+                placeholder="Select image"
               />
             )}
+
           </div>
+          {imagepreview && !imageUrl &&
+            <div className={classes.uploadbtn}>
+              <button disabled={isLoadingImg} onClick={uploadToStorageHandler}>Upload</button>
+            </div>
+          }
+          {imagepreview && progress > 0 && <h3 className={classes.upload}>Uploading... {progress}%</h3>}
+          {imageUrl && <h3 className={`${classes.upload} ${classes.completed}`}><span><AiFillCheckCircle size={45} color="green" /></span>Upload successfully</h3>}
         </div>
 
         <div className={classes.control}>
