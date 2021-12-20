@@ -39,7 +39,13 @@ function MeetupItem(props) {
   }
 
   const deleteHandler = () => {
-    props.onDeleteMeetup(props.id);
+    let isDelete = window.confirm("Are you sure to delet this meetup?");
+    if (isDelete) {
+      props.onDeleteMeetup(props.id);
+    } else {
+      return;
+    }
+
   };
 
   return (
