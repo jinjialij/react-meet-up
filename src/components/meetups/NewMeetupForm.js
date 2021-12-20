@@ -13,10 +13,17 @@ function NewMeetupForm(props) {
   const [progress, setProgess] = useState(0);
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState("");
-  // const [valid, setValid] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+
+  const setDisabledHandler = () => {
+    console.log(`setDisabledHandler triggered`);
+    const value = imageUrl && titleInputRef.current.value && addressInputRef.current.value && descInputRef.current.value;
+    console.log(!value)
+    setDisabled(!value);
+  }
 
   const uploadHandler = (event) => {
-    // console.log(event.target.files[0]);
+    console.log(event.target.files[0]);
     if (event.target.files[0]) {
       setImage(event.target.files[0]);
     }
@@ -39,11 +46,13 @@ function NewMeetupForm(props) {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           setImageUrl(url);
-          console.log(url);
+          // console.log(url);
+          setDisabledHandler();
         });
       }
     );
   };
+
 
   function submitHandler(event) {
     event.preventDefault(); //from js
@@ -72,7 +81,7 @@ function NewMeetupForm(props) {
       desc: enteredDescInput,
       fav: false,
     };
-    console.log(meetupData);
+    // console.log(meetupData);
     props.onAddMeetup(meetupData);
   }
   return (
@@ -80,7 +89,7 @@ function NewMeetupForm(props) {
       <form className={classes.form} onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor="title">Meetup Title</label>
-          <input type="text" required id="title" ref={titleInputRef} />
+          <input type="text" required id="title" ref={titleInputRef} onChange={setDisabledHandler} />
         </div>
 
         <div className={classes.control}>
@@ -104,22 +113,20 @@ function NewMeetupForm(props) {
 
         <div className={classes.control}>
           <label htmlFor="address">Meetup address</label>
-          <input type="text" required id="address" ref={addressInputRef} />
+          <input type="text" required id="address" ref={addressInputRef} onChange={setDisabledHandler} />
         </div>
 
         <div className={classes.control}>
           <label htmlFor="desc">Meetup description</label>
-          <textarea rows="5" required id="desc" ref={descInputRef}></textarea>
+          <textarea rows="5" required id="desc" ref={descInputRef} onChange={setDisabledHandler}></textarea>
         </div>
 
         <div className={classes.actions}>
-          !enteredDescInput
-          !enteredDescInput
-          <button disabled={imageUrl && titleInputRef.current.value && addressInputRef.current.value && descInputRef.current.value}>Add Meetup</button>
+          <button disabled={disabled}>Add Meetup</button>
         </div>
       </form>
     </Card>
-  );
+  )
 }
 
 export default NewMeetupForm;
