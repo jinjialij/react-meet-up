@@ -1,10 +1,13 @@
 import NewMeetupForm from "../components/meetups/NewMeetupForm";
 import { useHistory } from "react-router-dom";
 
+const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
+const TEST_URL = `http://localhost:5000/meetups`;
+
 function NewMeetupsPage() {
   const history = useHistory();
   function addMeetupHandler(meetupData) {
-    fetch("http://localhost:5000/new-meetup", {
+    fetch(`${BASE_URL}/new-meetup`, {
       method: "POST",
       body: JSON.stringify(meetupData),
       headers: { "Content-type": "application/json" },
