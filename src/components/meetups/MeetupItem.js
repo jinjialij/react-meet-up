@@ -40,7 +40,6 @@ function MeetupItem(props) {
     let isDelete = window.confirm("Are you sure to delet this meetup?");
     if (isDelete) {
       favoriteCtx.deleteMeetup(props.id);
-      props.onDeleteMeetup(props.id);
     } else {
       return;
     }

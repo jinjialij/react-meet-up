@@ -1,18 +1,36 @@
 import NewMeetupForm from "../components/meetups/NewMeetupForm";
+import FavouritesContext from '../store/favorites-context'
 import { useHistory } from "react-router-dom";
+import { useContext } from 'react'
 
 const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 const TEST_URL = `http://localhost:5000/meetups`;
 
 function NewMeetupsPage() {
   const history = useHistory();
+  const favoriteCtx = useContext(FavouritesContext);
   function addMeetupHandler(meetupData) {
     fetch(`${BASE_URL}/new-meetup`, {
       method: "POST",
       body: JSON.stringify(meetupData),
       headers: { "Content-type": "application/json" },
-    }).then(() => {
-      history.replace("/"); //redirect to the homepage
+    }).then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error adding new meetup, Status code: ${res.status}`)
+      }
+      return res.json()
+    }).then(data => {
+      console.log(data);
+      const doc = data.meetup._doc;
+      const newMeetup = {
+        id: data.meetup.id,
+        ...doc
+      }.catch(error => {
+        console.error(error)
+      })
+      // console.log(newMeetup);
+      favoriteCtx.addMeetup(newMeetup);
+      history.replace("/"); //redirect to the homepage});
     });
   }
   return (

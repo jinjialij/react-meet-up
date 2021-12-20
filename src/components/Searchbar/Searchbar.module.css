@@ -1,0 +1,35 @@
+.searchbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+h1 {
+    color: #77002e;
+    margin: 10px 0;
+}
+
+.searchbargroup {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+}
+
+.searchbtn {
+  margin: 5px;
+  height:2rem;
+  width: 60px;
+  color: white;
+  background-color: #77002e;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.searchbarinput {
+  margin: 10px;
+  border: none;
+  height: 2rem;
+  min-width: 210px;
+}
