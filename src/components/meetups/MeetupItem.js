@@ -10,8 +10,6 @@ function MeetupItem(props) {
   //read context data
   const favoriteCtx = useContext(FavouritesContext);
   const [isFav, setIsFav] = useState(props.fav);
-  //check if item is favourite
-  // const itemIsFavorite = favoriteCtx.itemIsFavorite(props.id);
   function toggleFavouriteStatusHandler() {
     if (isFav) {
       //remove when is not favourite
