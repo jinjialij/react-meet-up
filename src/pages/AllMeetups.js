@@ -10,7 +10,6 @@ const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 
 
 function AllMeetupsPage(props) {
-  // const initialUrl = `${BASE_URL}?page=1&limit=${props.limit}`;
   const [searchText, setSearchText] = useState("");
   const [searched, setSearched] = useState(false);
   const [searchResults, setSearchResults] = useState([]);

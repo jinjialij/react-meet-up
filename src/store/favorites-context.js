@@ -14,10 +14,6 @@ const FavouritesContext = createContext({
   deleteMeetup: (meetup) => { },
   url: "",
   setUrl: () => { },
-  allMeetupsTotalPage: 1,
-  setAllMeetupsTotalPage: () => { },
-  limit: 5,
-  setLimit: () => { }
 });
 const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 const TEST_URL = `http://localhost:5000/meetups`;
@@ -45,11 +41,9 @@ const updateFavApi = (favoriteMeetUp) => {
 export function FavoritesContextProvider(props) {
   const initialLimit = 3;
   const [allMeetups, setAllMeetups] = useState([]);
-  const [limit, setLimit] = useState(initialLimit)
   const [url, setUrl] = useState(`${BASE_URL}?title=&page=1&limit=${initialLimit}`);
   const [userFavourites, setUserFavourites] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalPage, setTotalPage] = useState(1);
 
 
   useEffect(() => {
@@ -67,18 +61,20 @@ export function FavoritesContextProvider(props) {
         // console.log(data);
         setAllMeetups(data.meetups.results);
         setUserFavourites(data.meetups.results.filter(meetup => meetup.fav !== false));
-        setTotalPage(data.meetups.results.totalpage);
         setIsLoading(false);
       })
       .catch((err) => console.error(err));
   }, [url]);
 
   function addFavoriteHandler(favoriteMeetUp) {
+    // console.log(favoriteMeetUp)
     setUserFavourites((prevFavorites) => {
       return prevFavorites.concat(favoriteMeetUp);
     });
+    //to do: fix bug
     const index = allMeetups.findIndex(meetup => meetup._id === favoriteMeetUp._id);
     const updateAllmeetups = [...allMeetups];
+    console.log(updateAllmeetups[index])
     updateAllmeetups[index].fav = favoriteMeetUp.fav;
     setAllMeetups(updateAllmeetups);
     updateFavApi(favoriteMeetUp);
@@ -96,6 +92,7 @@ export function FavoritesContextProvider(props) {
     updateFavApi(favoriteMeetUp);
   }
 
+  //To-do: fix bug
   const deleteMeetupHandler = (id) => {
     setUserFavourites((prev) => {
       return prev.filter((meetup) => meetup._id !== id);
@@ -124,14 +121,6 @@ export function FavoritesContextProvider(props) {
     setUrl(url);
   }
 
-  const allMeetupsTotalPageHandler = (total) => {
-    setTotalPage(total);
-  }
-
-  const limitHandler = (value) => {
-    setLimit(value);
-  }
-
   const context = {
     allMeetups: allMeetups,
     setAllMeetups: setAllMeetupsHandler,
@@ -145,10 +134,6 @@ export function FavoritesContextProvider(props) {
     addMeetup: addMeetupHandler,
     url: url,
     setUrl: urlHandler,
-    allMeetupsTotalPage: totalPage,
-    setTotalPage: allMeetupsTotalPageHandler,
-    limit: limit,
-    setLimit: limitHandler
   };
 
   return (
