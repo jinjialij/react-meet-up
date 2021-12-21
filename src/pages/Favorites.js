@@ -15,8 +15,9 @@ function FavoritesPage(props) {
     favoriteCtx.deleteMeetup(id);
   }
 
-  const searchHandler = async (url) => {
-    const data = await fetchMeetups(url);
+  const searchHandler = async (searchText) => {
+    const newUrl = `${BASE_URL}?fav=true&title=${searchText}&page=1&limit=${props.limit}`;
+    const data = await fetchMeetups(newUrl);
     setSearchResults(data.meetups.results);
     setSearched(true);
   }
