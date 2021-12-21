@@ -9,12 +9,7 @@ const Searchbar = (props) => {
     };
 
     const searchHandler = async () => {
-        console.log('search start')
-        const url = `${props.url}&title=${searchText}`;
-        props.onSearch(url);
-        // setPaginator((prevState) => {
-        //     return { ...prevState, page: 1 };
-        // });
+        props.onSearch(searchText);
     };
 
     return (

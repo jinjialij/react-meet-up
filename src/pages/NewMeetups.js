@@ -25,13 +25,14 @@ function NewMeetupsPage() {
       const newMeetup = {
         id: data.meetup.id,
         ...doc
-      }.catch(error => {
+      };
+      favoriteCtx.addMeetup(newMeetup);
+      history.replace("/");//redirect to the homepage});
+    })
+      .catch(error => {
         console.error(error)
       })
-      // console.log(newMeetup);
-      favoriteCtx.addMeetup(newMeetup);
-      history.replace("/"); //redirect to the homepage});
-    });
+    // console.log(newMeetup);
   }
   return (
     <section>

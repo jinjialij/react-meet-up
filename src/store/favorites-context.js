@@ -13,7 +13,11 @@ const FavouritesContext = createContext({
   removeFavorite: (meetupid) => { },
   deleteMeetup: (meetup) => { },
   url: "",
-  setUrl: () => { }
+  setUrl: () => { },
+  allMeetupsTotalPage: 1,
+  setAllMeetupsTotalPage: () => { },
+  limit: 5,
+  setLimit: () => { }
 });
 const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 const TEST_URL = `http://localhost:5000/meetups`;
@@ -39,10 +43,14 @@ const updateFavApi = (favoriteMeetUp) => {
 };
 
 export function FavoritesContextProvider(props) {
+  const initialLimit = 3;
   const [allMeetups, setAllMeetups] = useState([]);
-  const [url, setUrl] = useState(`${BASE_URL}?title=&page=1&limit=5`);
+  const [limit, setLimit] = useState(initialLimit)
+  const [url, setUrl] = useState(`${BASE_URL}?title=&page=1&limit=${initialLimit}`);
   const [userFavourites, setUserFavourites] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [totalPage, setTotalPage] = useState(1);
+
 
   useEffect(() => {
     // const url = `${BASE_URL}`;
@@ -59,6 +67,7 @@ export function FavoritesContextProvider(props) {
         // console.log(data);
         setAllMeetups(data.meetups.results);
         setUserFavourites(data.meetups.results.filter(meetup => meetup.fav !== false));
+        setTotalPage(data.meetups.results.totalpage);
         setIsLoading(false);
       })
       .catch((err) => console.error(err));
@@ -115,6 +124,14 @@ export function FavoritesContextProvider(props) {
     setUrl(url);
   }
 
+  const allMeetupsTotalPageHandler = (total) => {
+    setTotalPage(total);
+  }
+
+  const limitHandler = (value) => {
+    setLimit(value);
+  }
+
   const context = {
     allMeetups: allMeetups,
     setAllMeetups: setAllMeetupsHandler,
@@ -127,7 +144,11 @@ export function FavoritesContextProvider(props) {
     deleteMeetup: deleteMeetupHandler,
     addMeetup: addMeetupHandler,
     url: url,
-    setUrl: urlHandler
+    setUrl: urlHandler,
+    allMeetupsTotalPage: totalPage,
+    setTotalPage: allMeetupsTotalPageHandler,
+    limit: limit,
+    setLimit: limitHandler
   };
 
   return (

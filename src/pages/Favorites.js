@@ -33,7 +33,7 @@ function FavoritesPage(props) {
 
       {!searched && favoriteCtx.isLoading && <p>...Loading...</p>}
       {!searched && !favoriteCtx.isLoading && <div>{context}</div>}
-      {searched && searchResults.length == 0 && <p>0 result</p>}
+      {searched && searchResults.length === 0 && <p>0 result</p>}
       {searchResults.length > 0 && <MeetupList
         meetups={searchResults}
         onDeleteMeetup={deleteHandler}
