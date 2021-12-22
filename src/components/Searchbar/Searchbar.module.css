@@ -11,12 +11,6 @@ h1 {
     margin: 10px 0;
 }
 
-.searchbargroup {
-  display: inline-flex;
-  align-items: center;
-  height: 2rem;
-}
-
 .searchbtn {
   margin: 5px;
   height:2rem;
@@ -28,7 +22,7 @@ h1 {
 }
 
 .searchbarinput {
-  margin: 10px;
+  margin: 5px;
   border: none;
   height: 2rem;
   min-width: 210px;

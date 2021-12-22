@@ -5,7 +5,8 @@
 }
 
 .pagegroup {
-  margin: 0, 5px;
+  margin: 5px;
+  margin-top: 10px;
 }
 
 .pageItem {
@@ -13,7 +14,7 @@
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 6px;
-  border-color: grey;
+  border-color: grey;  
 }
 
 .total {

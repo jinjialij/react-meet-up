@@ -2,6 +2,7 @@ import MeetupList from "../components/meetups/MeetupList";
 import Searchbar from "../components/Searchbar/Searchbar";
 import Paginator from "../components/Paginator/Paginator";
 import FavouritesContext from "../store/favorites-context";
+import classes from './AllMeetups.module.css'
 import { BASE_URL, fetchMeetups } from '../service/FetchApiService'
 
 import { useState, useEffect, useContext } from "react";
@@ -83,6 +84,20 @@ function AllMeetupsPage(props) {
     })
   }
 
+  const prevHandler = () => {
+    const number = page - 1;
+    if (page > 1) {
+      changePagehandler(number)
+    }
+  }
+
+  const nextHandler = () => {
+    const number = page + 1;
+    if (page < totalPage) {
+      changePagehandler(number)
+    }
+  }
+
   return (
     <section>
       <Searchbar title={"All meetups"} onSearch={searchHandler} />
@@ -99,6 +114,10 @@ function AllMeetupsPage(props) {
         onDelete={deleteHandler}
         searched={searched}
       />}
+      <div className={classes.btngroup}>
+        {page > 1 && <button onClick={prevHandler}>Prev</button>}
+        {page < totalPage && <button onClick={nextHandler}>Next</button>}
+      </div>
     </section>
   );
 }

@@ -44,7 +44,7 @@ const Paginator = (props) => {
                     name="pages"
                     id="pages"
                     onChange={changePageHandler}
-                    defaultValue={props.page}
+                    value={props.page}
                 >
                     {props.options.map(el => {
                         return <Option key={el} pageNumber={el}></Option>
