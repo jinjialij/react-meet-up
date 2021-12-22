@@ -6,8 +6,9 @@ import Searchbar from "../components/Searchbar/Searchbar";
 
 function FavoritesPage(props) {
   const favoriteCtx = useContext(FavouritesContext);
-  const url = `${BASE_URL}?fav=true`;
+  const [url, setUrl] = useState(`${BASE_URL}?fav=true`);
   const [isLoading, setIsLoading] = useState(false);
+  const [searched, setSearched] = useState(false);
   useEffect(() => {
     // const url = `${BASE_URL}`;    
     if (favoriteCtx.favourites || favoriteCtx.favourites.length === 0) {
@@ -20,6 +21,9 @@ function FavoritesPage(props) {
           return res.json();
         })
         .then((data) => {
+          if (url.includes('title=')) {
+            setSearched(true);
+          }
           favoriteCtx.setFavourites(data.meetups);
           favoriteCtx.setNewFavourites([]);
           setIsLoading(false);
@@ -34,14 +38,17 @@ function FavoritesPage(props) {
 
   const searchHandler = async (searchText) => {
     const newUrl = `${BASE_URL}?fav=true&title=${searchText}`;
-    const data = await fetchMeetups(newUrl);
-    favoriteCtx.setFavourites(data.meetups);
+    setUrl(newUrl);
   }
 
   let context;
   if (favoriteCtx.totalFavourites === 0) {
     context = <p>No Favorites yet. Start adding some?</p>;
-  } else {
+    if (searched) {
+      context = <p>No matched meetup</p>;
+    }
+  }
+  else {
     context = <MeetupList meetups={favoriteCtx.favourites} onDelete={deleteHandler} />;
   }
   return (

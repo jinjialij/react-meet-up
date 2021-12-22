@@ -4,7 +4,7 @@ import classes from "./MeetupList.module.css";
 function MeetupList(props) {
   return (
     <ul className={classes.list}>
-      {props.meetups.map((meetup) => {
+      {props.meetups.length > 0 && props.meetups.map((meetup) => {
         // console.log(meetup);
         return (
           <MeetupItem
@@ -20,7 +20,9 @@ function MeetupList(props) {
           />
         );
       })}
+      {props.meetups.length === 0 && props.searched && <li>No matched meetup</li>}
     </ul>
+
   );
 }
 

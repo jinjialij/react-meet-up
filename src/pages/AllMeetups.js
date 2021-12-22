@@ -2,7 +2,7 @@ import MeetupList from "../components/meetups/MeetupList";
 import Searchbar from "../components/Searchbar/Searchbar";
 import Paginator from "../components/Paginator/Paginator";
 import FavouritesContext from "../store/favorites-context";
-import { BASE_URL } from '../service/FetchApiService'
+import { BASE_URL, fetchMeetups } from '../service/FetchApiService'
 
 import { useState, useEffect, useContext } from "react";
 
@@ -13,6 +13,7 @@ function AllMeetupsPage(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [searchText, setSearchText] = useState("");
+  const [searched, setSearched] = useState(false);
   const [totalPage, setTotalPage] = useState(1);
   const [page, setPage] = useState(1);
   //default limit is 10
@@ -26,23 +27,42 @@ function AllMeetupsPage(props) {
         if (!res.ok) {
           throw new Error(`Failed to update, Status: ${res.status}`);
         }
+
         return res.json();
       })
       .then((data) => {
-        setMeetups(data.meetups.results);
-        setTotalPage(data.meetups.totalpage);
-        const fav = data.meetups.results.filter(meetup => meetup.fav !== false);
-        favoriteCtx.setFavourites(fav);
-        favoriteCtx.setNewFavourites([]);
-        setIsLoading(false);
+        if (!url.includes('page')) {
+          setSearched(true);
+        }
+        if (data.meetups.length !== 0) {
+          setMeetups(data.meetups.results);
+          setTotalPage(data.meetups.totalpage);
+          const fav = data.meetups.results.filter(meetup => meetup.fav !== false);
+          favoriteCtx.setFavourites(fav);
+          favoriteCtx.setNewFavourites([]);
+          setIsLoading(false);
+        } else {
+          setMeetups(data.meetups);
+          setTotalPage(1);
+          const fav = data.meetups.filter(meetup => meetup.fav !== false);
+          favoriteCtx.setFavourites(fav);
+          favoriteCtx.setNewFavourites([]);
+          setIsLoading(false);
+        }
       })
       .catch((err) => console.error(err));
   }, [url, favoriteCtx.newFavourite]);
 
   const searchHandler = async (searchText) => {
     setSearchText(searchText);
-    const newUrl = `${BASE_URL}?title=${searchText}&page=1&limit=${props.limit}`;
-    setUrl(newUrl);
+    let newUrl = `${BASE_URL}?title=${searchText}`;
+    const data = await fetchMeetups(newUrl);
+    if (data.meetups.length === 0) {
+      setUrl(newUrl);
+    } else {
+      newUrl = `${BASE_URL}?title=${searchText}&page=1&limit=${props.limit}`;
+      setUrl(newUrl);
+    }
   }
 
   const changePagehandler = async (newPage) => {
@@ -76,6 +96,7 @@ function AllMeetupsPage(props) {
       {!isLoading && <MeetupList
         meetups={meetups}
         onDelete={deleteHandler}
+        searched={searched}
       />}
     </section>
   );
