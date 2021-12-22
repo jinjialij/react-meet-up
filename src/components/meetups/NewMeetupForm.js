@@ -118,7 +118,7 @@ function NewMeetupForm(props) {
           <input type="file" required id="image" onChange={uploadHandler} accept="image/*" />
 
 
-          <div className={classes.upload}>
+          <div>
             {imagepreview && (
               <img
                 src={imagepreview}

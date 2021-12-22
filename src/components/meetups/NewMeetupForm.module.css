@@ -49,15 +49,6 @@
   border-color: #a50e48;
 }
 
-.upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 600px;
-  margin: 10px;
-  overflow: auto;
-}
-
 .completed {
   color: rgb(7, 189, 7);
   font-size: 1.5rem;
