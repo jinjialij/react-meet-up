@@ -1,6 +1,5 @@
 import Option from "../ui/Option";
 import classes from './Paginator.module.css'
-import { useState } from "react";
 
 // const getPaginationGroup = () => {
 //     let start = 0;
@@ -33,6 +32,7 @@ const Paginator = (props) => {
                     <option value="3" >3</option>
                     <option value="5" >5</option>
                     <option value="10" >10</option>
+                    <option value="10" >20</option>
                 </select>
             </div>
             <div className={classes.pagegroup}>

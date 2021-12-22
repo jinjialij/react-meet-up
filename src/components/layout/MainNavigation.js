@@ -22,7 +22,7 @@ function MainNavigation() {
             <Link to="/favourites">
               My favourites
               <span className={classes.badge}>
-                {favoriteCtx.totalFavourites}
+                New {favoriteCtx.totalNewFavourites}
               </span>
             </Link>
           </li>

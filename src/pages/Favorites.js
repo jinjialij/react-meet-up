@@ -1,44 +1,54 @@
 import FavouritesContext from "../store/favorites-context";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import MeetupList from "../components/meetups/MeetupList";
-import { fetchMeetups } from '../service/FetchApiService';
+import { fetchMeetups, BASE_URL } from '../service/FetchApiService';
 import Searchbar from "../components/Searchbar/Searchbar";
-
-const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
 
 function FavoritesPage(props) {
   const favoriteCtx = useContext(FavouritesContext);
-  const initialUrl = `${BASE_URL}?fav=true&page=1&limit=${props.limit}`;
-  const [searched, setSearched] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
+  const url = `${BASE_URL}?fav=true`;
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    // const url = `${BASE_URL}`;    
+    if (favoriteCtx.favourites || favoriteCtx.favourites.length === 0) {
+      setIsLoading(true);
+      fetch(url)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Failed to update, Status: ${res.status}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          favoriteCtx.setFavourites(data.meetups);
+          favoriteCtx.setNewFavourites([]);
+          setIsLoading(false);
+        })
+        .catch((err) => console.error(err));
+    }
+  }, [url]);
+
   const deleteHandler = (id) => {
-    favoriteCtx.deleteMeetup(id);
+    // console.log(id);
   }
 
   const searchHandler = async (searchText) => {
-    const newUrl = `${BASE_URL}?fav=true&title=${searchText}&page=1&limit=${props.limit}`;
+    const newUrl = `${BASE_URL}?fav=true&title=${searchText}`;
     const data = await fetchMeetups(newUrl);
-    setSearchResults(data.meetups.results);
-    setSearched(true);
+    favoriteCtx.setFavourites(data.meetups);
   }
 
   let context;
   if (favoriteCtx.totalFavourites === 0) {
     context = <p>No Favorites yet. Start adding some?</p>;
   } else {
-    context = <MeetupList meetups={favoriteCtx.favourites} onDeleteMeetup={deleteHandler} />;
+    context = <MeetupList meetups={favoriteCtx.favourites} onDelete={deleteHandler} />;
   }
   return (
     <section>
-      <Searchbar title={"My Favorites"} url={initialUrl} onSearch={searchHandler} />
-
-      {!searched && favoriteCtx.isLoading && <p>...Loading...</p>}
-      {!searched && !favoriteCtx.isLoading && <div>{context}</div>}
-      {searched && searchResults.length === 0 && <p>0 result</p>}
-      {searchResults.length > 0 && <MeetupList
-        meetups={searchResults}
-        onDeleteMeetup={deleteHandler}
-      />}
+      <Searchbar title={"My Favorites"} onSearch={searchHandler} />
+      {!isLoading && <div>{context}</div>}
+      {isLoading && <p>...Loading...</p>}
     </section>
   );
 }

@@ -16,6 +16,7 @@ function MeetupList(props) {
             description={meetup.description}
             fav={meetup.fav}
             onDeleteMeetup={props.onDeleteMeetup}
+            onDelete={props.onDelete}
           />
         );
       })}
