@@ -6,11 +6,12 @@ import NewMeetupsPage from "./pages/NewMeetups";
 import Layout from "./components/layout/Layout";
 
 function App() {
+
   return (
     <Layout>
       <Switch>
         <Route path="/" exact={true}>
-          <AllMeetupsPage />
+          <AllMeetupsPage page={1} limit={10} />
         </Route>
         <Route path="/new-meetup">
           <NewMeetupsPage />

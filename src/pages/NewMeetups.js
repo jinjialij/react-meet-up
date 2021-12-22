@@ -1,19 +1,13 @@
 import NewMeetupForm from "../components/meetups/NewMeetupForm";
+import { addMeetupApi } from '../service/FetchApiService';
 import { useHistory } from "react-router-dom";
-
-const BASE_URL = `https://meetuphere.herokuapp.com/meetups`;
-const TEST_URL = `http://localhost:5000/meetups`;
 
 function NewMeetupsPage() {
   const history = useHistory();
-  function addMeetupHandler(meetupData) {
-    fetch(`${BASE_URL}/new-meetup`, {
-      method: "POST",
-      body: JSON.stringify(meetupData),
-      headers: { "Content-type": "application/json" },
-    }).then(() => {
-      history.replace("/"); //redirect to the homepage
-    });
+  const addMeetupHandler = (meetupData) => {
+    addMeetupApi(meetupData);
+    // console.log(newMeetup)
+    history.replace("/");//redirect to the homepage});
   }
   return (
     <section>

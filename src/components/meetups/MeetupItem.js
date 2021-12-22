@@ -36,11 +36,11 @@ function MeetupItem(props) {
     }
   }
 
-  const deleteHandler = () => {
+  const deleteHandler = async () => {
     let isDelete = window.confirm("Are you sure to delet this meetup?");
     if (isDelete) {
-      favoriteCtx.deleteMeetup(props.id);
-      props.onDeleteMeetup(props.id);
+      const deletedMeetup = await favoriteCtx.deleteMeetup(props.id);
+      props.onDelete(deletedMeetup);
     } else {
       return;
     }
