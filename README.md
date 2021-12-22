@@ -4,7 +4,7 @@ This web app is a website that allows user to post meetup information. [Check De
 It fetch data from a backend project, which is built by Express.  
 For more information, check:
 
-- [GitRepo](git@github.com:jinjialij/meetuphere.git)  
+- [GitRepo](https://github.com/jinjialij/meetuphere)  
 - [Check Demo](https://meetuphere.herokuapp.com/meetups)
 
 ## Built with
