@@ -37,7 +37,7 @@ function AllMeetupsPage(props) {
         setIsLoading(false);
       })
       .catch((err) => console.error(err));
-  }, [url,]);
+  }, [url, favoriteCtx.newFavourite]);
 
   const searchHandler = async (searchText) => {
     setSearchText(searchText);
