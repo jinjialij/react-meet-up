@@ -1,12 +1,16 @@
 import NewMeetupForm from "../components/meetups/NewMeetupForm";
 import { addMeetupApi } from '../service/FetchApiService';
 import { useHistory } from "react-router-dom";
+import { useContext } from "react";
+import FavouritesContext from '../store/favorites-context'
 
-function NewMeetupsPage() {
+function NewMeetupsPage(props) {
   const history = useHistory();
-  const addMeetupHandler = (meetupData) => {
-    addMeetupApi(meetupData);
+  const favoriteCtx = useContext(FavouritesContext);
+  const addMeetupHandler = async (meetupData) => {
+    const newMeetup = await addMeetupApi(meetupData);
     // console.log(newMeetup)
+    favoriteCtx.addNewFavorite(newMeetup);
     history.replace("/");//redirect to the homepage});
   }
   return (

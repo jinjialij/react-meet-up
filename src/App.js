@@ -6,7 +6,6 @@ import NewMeetupsPage from "./pages/NewMeetups";
 import Layout from "./components/layout/Layout";
 
 function App() {
-
   return (
     <Layout>
       <Switch>

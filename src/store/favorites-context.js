@@ -4,6 +4,8 @@ import { deleteMeetup, updateFavApi, BASE_URL } from '../service/FetchApiService
 const FavouritesContext = createContext({
   favourites: [],
   totalFavourites: 0,
+  newFavourite: {},
+  addNewFavorite: () => { },
   newFavourites: [],
   totalNewFavourites: 0,
   setFavourites: () => { },
@@ -14,6 +16,7 @@ const FavouritesContext = createContext({
 });
 
 export function FavoritesContextProvider(props) {
+  const [newFavourite, setNewFavourite] = useState();
   const [userFavourites, setUserFavourites] = useState([]);
   const [newFavourites, setNewFavourites] = useState([]);
 
@@ -56,13 +59,19 @@ export function FavoritesContextProvider(props) {
     setNewFavourites(newfavorites);
   }
 
+  const addNewFavoriteHandler = (meetup) => {
+    setNewFavourite(meetup);
+  }
+
   const context = {
     favourites: userFavourites,
     totalFavourites: userFavourites.length,
+    newFavourite: newFavourite,
     newFavourites: newFavourites,
     totalNewFavourites: newFavourites.length,
     setFavourites: setFavouritesHandler,
     setNewFavourites: setNewFavouritesHandler,
+    addNewFavorite: addNewFavoriteHandler,
     addFavorite: addFavoriteHandler,
     removeFavorite: removeFavoriteHandler,
     deleteMeetup: deleteMeetupHandler,
