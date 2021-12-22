@@ -1,7 +1,7 @@
 import FavouritesContext from "../store/favorites-context";
 import { useContext, useState, useEffect } from "react";
 import MeetupList from "../components/meetups/MeetupList";
-import { fetchMeetups, BASE_URL } from '../service/FetchApiService';
+import { BASE_URL } from '../service/FetchApiService';
 import Searchbar from "../components/Searchbar/Searchbar";
 
 function FavoritesPage(props) {

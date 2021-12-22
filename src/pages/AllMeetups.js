@@ -49,6 +49,7 @@ function AllMeetupsPage(props) {
           favoriteCtx.setNewFavourites([]);
           setIsLoading(false);
         }
+        setOptions(new Array(data.meetups.totalpage).fill().map((_, idx) => idx + 1))
       })
       .catch((err) => console.error(err));
   }, [url, favoriteCtx.newFavourite]);
@@ -60,7 +61,7 @@ function AllMeetupsPage(props) {
     if (data.meetups.length === 0) {
       setUrl(newUrl);
     } else {
-      newUrl = `${BASE_URL}?title=${searchText}&page=1&limit=${props.limit}`;
+      newUrl = `${BASE_URL}?title=${searchText}&page=1&limit=${limit}`;
       setUrl(newUrl);
     }
   }
